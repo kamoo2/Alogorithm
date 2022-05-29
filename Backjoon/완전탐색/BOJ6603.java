@@ -1,59 +1,99 @@
-package Lotto;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
+import java.io.*;
 import java.util.StringTokenizer;
 
-// 로또
-// https://www.acmicpc.net/problem/6603
 public class BOJ6603 {
+    // 로또
+    // https://www.acmicpc.net/problem/6603
 
-    static int k;
-    static int[] arr, result;
-    static boolean[] used;
-    static BufferedWriter bw;
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        while(true){
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            k = Integer.parseInt(st.nextToken());
-            if(k == 0) break;
-
-            arr = new int[k];
-            result = new int[6];
-            used = new boolean[k];
-            for(int i = 0; i < k ; i++){
-                arr[i] = Integer.parseInt(st.nextToken());
-            }
-
-            recur(0, 0, result);
-            bw.flush();
-            bw.write("\n");
+    static StringBuilder sb = new StringBuilder();
+    static FastReader sc = new FastReader();
+    static int N;
+    static int[] nums;
+    static int[] lotto;
+    static void input(){
+        N = sc.nextInt();
+        nums = new int[N+1];
+        lotto = new int[7];
+        for(int i=1;i<=N;i++){
+            nums[i] = sc.nextInt();
         }
     }
 
-    public static void recur(int idx, int cnt, int[] result) throws Exception {
-        if(cnt == 6){
-            Arrays.sort(result);
-            StringBuilder sb = new StringBuilder();
-            for(int num : result){
-                sb.append(num + " ");
+    static void rec_func(int depth,int start){
+        if(depth == 7){
+            for(int i=1;i<depth;i++){
+                sb.append(lotto[i]).append(' ');
             }
-            bw.write(sb.toString());
-            bw.write("\n");
-            return;
+            sb.append('\n');
+        }else{
+            for(int i=start;i<=N;i++){
+                lotto[depth] = nums[i];
+                rec_func(depth+1,i+1);
+                lotto[depth] = 0;
+            }
+        }
+    }
+
+    static void pro(){
+        rec_func(1,1);
+        sb.append('\n');
+    }
+
+    public static void main(String[] args) {
+        while(true){
+            input();
+            if(N == 0){
+                System.out.println(sb.toString());
+                break;
+            }
+            pro();
+        }
+    }
+
+    static class FastReader{
+        BufferedReader br;
+        StringTokenizer st;
+
+        public FastReader(){
+            br = new BufferedReader(new InputStreamReader(System.in));
         }
 
-        for(int i = idx; i < k; i++){
-            if(used[i]) continue;
-            used[i] = true;
-            result[cnt] = arr[i];
-            recur(i+1, cnt+1, result);
-            used[i] = false;
+        public FastReader(String s)throws FileNotFoundException{
+            br = new BufferedReader(new FileReader(new File(s)));
+        }
+
+        String next(){
+            if(st == null || !st.hasMoreElements()){
+                try{
+                    st = new StringTokenizer(br.readLine());
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+            }
+            return st.nextToken();
+        }
+
+        Integer nextInt(){
+            return Integer.parseInt(next());
+        }
+
+        Long nextLong(){
+            return Long.parseLong(next());
+        }
+
+        Double nextDouble(){
+            return Double.parseDouble(next());
+        }
+
+        String nextLine(){
+            String str = "";
+            try{
+                str = br.readLine();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
+            return str;
         }
     }
 }
