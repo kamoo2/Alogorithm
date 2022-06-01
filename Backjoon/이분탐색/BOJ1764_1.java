@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class BOJ1764 {
+public class BOJ1764_1 {
     // 듣보잡
     // https://www.acmicpc.net/problem/1764
 
