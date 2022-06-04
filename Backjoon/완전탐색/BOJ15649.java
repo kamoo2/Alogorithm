@@ -1,8 +1,9 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class BOJ15654 {
+public class BOJ15649 {
+    // N과 M(1)
+    // https://www.acmicpc.net/problem/15649
 
     static StringBuilder sb = new StringBuilder();
     static FastReader sc = new FastReader();
@@ -13,14 +14,12 @@ public class BOJ15654 {
         N = sc.nextInt();
         M = sc.nextInt();
         nums = new int[N+1];
-        selected = new int[M+1];
+        selected=  new int[M+1];
         visit = new boolean[N+1];
-        for(int i=1;i<=N;i++){
-            nums[i] = sc.nextInt();
-        }
     }
     static void rec_func(int k){
         if(k == M+1){
+            // M개 고르기 완료
             for(int i=1;i<=M;i++){
                 sb.append(selected[i]).append(' ');
             }
@@ -29,15 +28,15 @@ public class BOJ15654 {
             for(int i=1;i<=N;i++){
                 if(visit[i]) continue;
                 visit[i] = true;
-                selected[k] = nums[i];
+                selected[k] = i;
                 rec_func(k+1);
-                selected[k] = 0;
                 visit[i] = false;
+                selected[k] = 0;
             }
         }
     }
+
     static void pro(){
-        Arrays.sort(nums);
         rec_func(1);
         System.out.println(sb);
     }

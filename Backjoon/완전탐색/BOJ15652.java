@@ -1,53 +1,42 @@
-package NandM3;
-
 import java.io.*;
 import java.util.StringTokenizer;
 
-// N과M (4)
-// https://www.acmicpc.net/problem/15652
 public class BOJ15652 {
+
     static StringBuilder sb = new StringBuilder();
+    static FastReader sc = new FastReader();
     static int N,M;
     static int[] selected;
+
     static void input(){
-        FastReader scan = new FastReader();
-        N = scan.nextInt();
-        M = scan.nextInt();
+        N = sc.nextInt();
+        M = sc.nextInt();
         selected = new int[M+1];
     }
 
-    static void rec_func(int k){
+    static void rec_func(int k,int start){
         if(k == M+1){
-            // 출력
             for(int i=1;i<=M;i++){
                 sb.append(selected[i]).append(' ');
             }
             sb.append('\n');
         }else{
-//            for(int cand=1;cand<=N;cand++){
-//                if(selected[k-1] > cand){
-//                    continue;
-//                }
-//
-//                selected[k] = cand;
-//                rec_func(k+1);
-//                selected[k] =0;
-//            }
-
-            int start = selected[k-1];
-            if(start == 0) start =1;
-            for(int cand = start; cand <= N; cand++){
-                selected[k] = cand;
-                rec_func(k+1);
+            for(int i=start;i<=N;i++){
+                selected[k] = i;
+                rec_func(k+1,i);
                 selected[k] = 0;
             }
         }
     }
 
+    static void pro(){
+        rec_func(1,1);
+        System.out.println(sb);
+    }
+
     public static void main(String[] args) {
         input();
-        rec_func(1);
-        System.out.println(sb.toString());
+        pro();
     }
 
     static class FastReader{
@@ -58,19 +47,18 @@ public class BOJ15652 {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
 
-        public FastReader(String s) throws FileNotFoundException{
+        public FastReader(String s)throws FileNotFoundException{
             br = new BufferedReader(new FileReader(new File(s)));
         }
 
         String next(){
-            while(st == null || !st.hasMoreElements()){
+            if(st == null || !st.hasMoreElements()){
                 try{
                     st = new StringTokenizer(br.readLine());
                 }catch(IOException e){
                     e.printStackTrace();
                 }
             }
-
             return st.nextToken();
         }
 
@@ -87,7 +75,7 @@ public class BOJ15652 {
         }
 
         String nextLine(){
-            String str ="";
+            String str = "";
             try{
                 str = br.readLine();
             }catch(IOException e){
@@ -96,6 +84,5 @@ public class BOJ15652 {
 
             return str;
         }
-
     }
 }

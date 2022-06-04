@@ -1,50 +1,49 @@
-package NandM4;
-
 import java.io.*;
 import java.util.StringTokenizer;
 
-// N과M (2)
-// https://www.acmicpc.net/problem/15650
 public class BOJ15650 {
+    // N과M(2)
+    // https://www.acmicpc.net/problem/15650
+
     static StringBuilder sb = new StringBuilder();
+    static FastReader sc = new FastReader();
     static int N,M;
-    static int[] selected,used;
+    static int[] selected;
+    static boolean[] visit;
     static void input(){
-        FastReader scan = new FastReader();
-        N = scan.nextInt();
-        M = scan.nextInt();
+        N = sc.nextInt();
+        M = sc.nextInt();
         selected = new int[M+1];
-        used = new int[N+1];
+        visit = new boolean[N+1];
     }
 
-    static void rec_func(int k){
+    static void rec_func(int k,int start){
         if(k == M+1){
-            // 출력
+            // M개 고른 수열 완성
             for(int i=1;i<=M;i++){
                 sb.append(selected[i]).append(' ');
             }
             sb.append('\n');
         }else{
-            int start = selected[k-1];
-            if(start == 0) start=1;
-            for(int cand=start;cand<=N;cand++){
-                if(used[cand] == 1){
-                    continue;
-                }
-
-                selected[k] = cand;
-                used[cand] = 1;
-                rec_func(k+1);
+            for(int i=start;i<=N;i++){
+                if(visit[i]) continue;
+                selected[k] = i;
+                visit[i] = true;
+                rec_func(k+1,i+1);
                 selected[k] = 0;
-                used[cand] = 0;
+                visit[i] = false;
             }
         }
     }
 
+    static void pro(){
+        rec_func(1,1);
+        System.out.println(sb);
+    }
+
     public static void main(String[] args) {
         input();
-        rec_func(1);
-        System.out.println(sb.toString());
+        pro();
     }
 
     static class FastReader{
@@ -55,19 +54,18 @@ public class BOJ15650 {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
 
-        public FastReader(String s) throws FileNotFoundException{
+        public FastReader(String s)throws FileNotFoundException{
             br = new BufferedReader(new FileReader(new File(s)));
         }
 
         String next(){
-            while(st == null || !st.hasMoreElements()){
+            if(st == null || !st.hasMoreElements()){
                 try{
                     st = new StringTokenizer(br.readLine());
                 }catch(IOException e){
                     e.printStackTrace();
                 }
             }
-
             return st.nextToken();
         }
 
@@ -84,7 +82,7 @@ public class BOJ15650 {
         }
 
         String nextLine(){
-            String str ="";
+            String str = "";
             try{
                 str = br.readLine();
             }catch(IOException e){
@@ -93,6 +91,5 @@ public class BOJ15650 {
 
             return str;
         }
-
     }
 }

@@ -1,47 +1,43 @@
-package NandM1;
-
 import java.io.*;
 import java.util.StringTokenizer;
 
-// N과M (3)
-// https://www.acmicpc.net/problem/15651
 public class BOJ15651 {
-    static StringBuilder sb = new StringBuilder();
 
+    static StringBuilder sb = new StringBuilder();
+    static FastReader sc = new FastReader();
     static int N,M;
     static int[] selected;
 
     static void input(){
-        FastReader scan = new FastReader();
-        N = scan.nextInt();
-        M = scan.nextInt();
+        N = sc.nextInt();
+        M = sc.nextInt();
         selected = new int[M+1];
     }
 
     static void rec_func(int k){
         if(k == M+1){
-            // 3자리를 모두 채운 경우 : 출력 -> Ex) 1 1 1
             for(int i=1;i<=M;i++){
                 sb.append(selected[i]).append(' ');
             }
             sb.append('\n');
         }else{
-            // 3자리를 모두 채우지 못한 경우 : 1~N까지의 수를 각 자리에 추가해줘야 한다.
-            for(int cand = 1; cand <= N;cand++){
-                selected[k] = cand;
+            for(int i=1;i<=N;i++){
+                selected[k] = i;
                 rec_func(k+1);
-                selected[k] =0;
+                selected[k] = 0;
             }
         }
     }
 
-    public static void main(String[] args) {
-        input();
+    static void pro(){
         rec_func(1);
-        System.out.println(sb.toString());
+        System.out.println(sb);
     }
 
-
+    public static void main(String[] args) {
+        input();
+        pro();
+    }
 
     static class FastReader{
         BufferedReader br;
@@ -51,30 +47,30 @@ public class BOJ15651 {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
 
-        public FastReader(String s) throws FileNotFoundException{
+        public FastReader(String s)throws FileNotFoundException{
             br = new BufferedReader(new FileReader(new File(s)));
         }
 
         String next(){
-            while(st == null || !st.hasMoreElements()){
+            if(st == null || !st.hasMoreElements()){
                 try{
                     st = new StringTokenizer(br.readLine());
-                }catch (IOException e){
+                }catch(IOException e){
                     e.printStackTrace();
                 }
             }
             return st.nextToken();
         }
 
-        int nextInt(){
+        Integer nextInt(){
             return Integer.parseInt(next());
         }
 
-        long nextLong(){
+        Long nextLong(){
             return Long.parseLong(next());
         }
 
-        double nextDouble(){
+        Double nextDouble(){
             return Double.parseDouble(next());
         }
 
@@ -85,6 +81,7 @@ public class BOJ15651 {
             }catch(IOException e){
                 e.printStackTrace();
             }
+
             return str;
         }
     }

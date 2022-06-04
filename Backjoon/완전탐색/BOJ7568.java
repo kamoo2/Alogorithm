@@ -1,45 +1,46 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class BOJ15654 {
+public class BOJ7568 {
+    // 덩치
+    // https://www.acmicpc.net/problem/7568
 
     static StringBuilder sb = new StringBuilder();
     static FastReader sc = new FastReader();
-    static int N,M;
-    static int[] nums,selected;
-    static boolean[] visit;
+    static int N;
+    static Pos[] A;
     static void input(){
         N = sc.nextInt();
-        M = sc.nextInt();
-        nums = new int[N+1];
-        selected = new int[M+1];
-        visit = new boolean[N+1];
+        A = new Pos[N+1];
         for(int i=1;i<=N;i++){
-            nums[i] = sc.nextInt();
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+            A[i] = new Pos(x,y);
         }
     }
-    static void rec_func(int k){
-        if(k == M+1){
-            for(int i=1;i<=M;i++){
-                sb.append(selected[i]).append(' ');
-            }
-            sb.append('\n');
-        }else{
-            for(int i=1;i<=N;i++){
-                if(visit[i]) continue;
-                visit[i] = true;
-                selected[k] = nums[i];
-                rec_func(k+1);
-                selected[k] = 0;
-                visit[i] = false;
-            }
-        }
-    }
+
     static void pro(){
-        Arrays.sort(nums);
-        rec_func(1);
+        for(int i=1;i<=N;i++){
+            int cnt = 0;
+            for(int j=1;j<=N;j++){
+                if(i == j) continue;
+                if(A[i].x < A[j].x && A[i].y < A[j].y){
+                    cnt++;
+                }
+            }
+            sb.append(cnt+1).append(' ');
+        }
+
         System.out.println(sb);
+    }
+
+    static class Pos{
+        public int x;
+        public int y;
+        public Pos(int x,int y){
+            this.x = x;
+            this.y = y;
+        }
     }
 
     public static void main(String[] args) {

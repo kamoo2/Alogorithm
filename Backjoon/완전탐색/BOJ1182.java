@@ -1,45 +1,46 @@
-package Sequence;
-
 import java.io.*;
 import java.util.StringTokenizer;
 
-// 부분수열의 합
-// https://www.acmicpc.net/problem/1182
 public class BOJ1182 {
-    static FastReader scan = new FastReader();
-    static StringBuilder sb = new StringBuilder();
-
-    static Integer N,S,ans =0;
-    static Integer[] nums;
+    static StringBuilder sb= new StringBuilder();
+    static FastReader sc = new FastReader();
+    static int N,S,ans;
+    static int[] nums,selected;
+    static boolean[] visit;
     static void input(){
-        N = scan.nextInt();
-        S = scan.nextInt();
-        nums = new Integer[N+1];
+        N = sc.nextInt();
+        S = sc.nextInt();
+        nums = new int[N+1];
+        visit = new boolean[N+1];
         for(int i=1;i<=N;i++){
-            nums[i] = scan.nextInt();
+            nums[i] = sc.nextInt();
+        }
+    }
+
+    static void rec_func(int depth,int sum){
+        if(depth == N+1){
+            // 부분 수열 완성
+            if(sum == S) ans++;
+        }else{
+
+                // 해당 원소 선택
+                rec_func(depth+1,sum+nums[depth]);
+                // 해당 원소 선택 X
+                rec_func(depth+1,sum);
         }
     }
 
 
-    static void rec_func(int k,int value){
-        if(k == N+1){
-            // 부분 수열 완성된 경우
-            if(S == value){
-                ans++;
-            }
-        }else{
-            rec_func(k+1,value+nums[k]);
-            rec_func(k+1,value);
-        }
+    static void pro(){
+        ans = 0;
+        rec_func(1,0);
+        if(S == 0) ans--;
+        System.out.println(ans);
     }
 
     public static void main(String[] args) {
         input();
-        rec_func(1,0);
-        if(S == 0){
-            ans--;
-        }
-        System.out.println(ans);
+        pro();
     }
 
     static class FastReader{
@@ -50,13 +51,13 @@ public class BOJ1182 {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
 
-        public FastReader(String s) throws FileNotFoundException {
+        public FastReader(String s)throws FileNotFoundException {
             br = new BufferedReader(new FileReader(new File(s)));
         }
 
         String next(){
-            while(st == null || !st.hasMoreElements()){
-                try {
+            if(st == null || !st.hasMoreTokens()){
+                try{
                     st = new StringTokenizer(br.readLine());
                 }catch(IOException e){
                     e.printStackTrace();
@@ -79,13 +80,11 @@ public class BOJ1182 {
 
         String nextLine(){
             String str = "";
-
             try{
                 str = br.readLine();
             }catch(IOException e){
                 e.printStackTrace();
             }
-
             return str;
         }
     }

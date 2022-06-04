@@ -10,37 +10,38 @@ public class BOJ9663_2 {
 
     static StringBuilder sb = new StringBuilder();
     static FastReader sc = new FastReader();
-    static int N,ans =0;
-    static int[] cols;
+    static int N,ans=0;
+    static int[] cols; // idx번 row에 배치된 퀸의 col 값
     static void input(){
         N = sc.nextInt();
         cols = new int[N+1];
     }
-    static boolean attackable(int cur_row,int cur_col,int row,int col){
-        if(cur_col == col){
+
+    static boolean attackable(int row1,int col1,int row2,int col2){
+        if(col1 == col2){
             return true;
         }
-
-        if(cur_row-cur_col == row - col){
+        if(row1-col1 == row2-col2){
             return true;
         }
-
-        if(cur_row+cur_col == row + col){
+        if(row1+col1 == row2+col2){
             return true;
         }
 
         return false;
     }
+
     static void rec_func(int row){
         if(row == N+1){
-            // 모두 배치 완료 했으면 문제없이 배치 한것이므로 경우의수 증가
+            // 성공적으로 배치 완료
             ans++;
         }else{
-            for(int c = 1;c<=N;c++){
-                boolean possible = true;
-                for(int i = 1;i<=row-1;i++){
-                    // 현재 row 이전 row들을 돌면서 공격 가능한 자리 인지 체크
-                    if(attackable(row,c,i,cols[i])){
+            // 각 col에 배치 할때 공격가능한지 체크하고 불가능시 배치
+            for(int c=1;c<=N;c++){
+                boolean possible = true; // 배치 가능한지 체크할 변수
+                for(int j=1;j<=row-1;j++){
+                    // 검사시 필요한 현재 배치 할 row의 이전 row들
+                    if(attackable(row,c,j,cols[j])){
                         possible = false;
                     }
                 }
